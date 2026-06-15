@@ -2246,10 +2246,10 @@
 
             function updateCursor() {
                 // Smooth follow using linear interpolation
-                dotX += (mouseX - dotX) * 0.3;
-                dotY += (mouseY - dotY) * 0.3;
-                ringX += (mouseX - ringX) * 0.15;
-                ringY += (mouseY - ringY) * 0.15;
+                dotX += (mouseX - dotX) * 0.8;
+                dotY += (mouseY - dotY) * 0.8;
+                ringX += (mouseX - ringX) * 0.4;
+                ringY += (mouseY - ringY) * 0.4;
 
                 cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
                 cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
