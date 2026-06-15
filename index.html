@@ -2138,15 +2138,16 @@
                 </div>
                 
                 <div class="contact-form-container" data-aos="fade-left">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="b9b72d64-3268-4d10-bf69-7f7af31f4b7f">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your Name" required>
+                            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Your Email" required>
+                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Your Message" required></textarea>
+                            <textarea name="message" class="form-control" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary btn-submit">Send Message <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
                         
@@ -2446,17 +2447,39 @@
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                     btn.disabled = true;
                     
-                    // Simulate API call
-                    setTimeout(() => {
-                        contactForm.reset();
+                    const formData = new FormData(contactForm);
+                    const object = Object.fromEntries(formData);
+                    const json = JSON.stringify(object);
+                    
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        if (response.status == 200) {
+                            contactForm.reset();
+                            successMessage.style.display = 'block';
+                            
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                            }, 5000);
+                        } else {
+                            console.log(response);
+                            alert('Something went wrong!');
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert('Something went wrong!');
+                    })
+                    .finally(() => {
                         btn.innerHTML = originalText;
                         btn.disabled = false;
-                        successMessage.style.display = 'block';
-                        
-                        setTimeout(() => {
-                            successMessage.style.display = 'none';
-                        }, 5000);
-                    }, 1500);
+                    });
                 });
             }
 
